@@ -6,6 +6,7 @@ const introTitles = document.querySelectorAll("[data-intro-step]");
 const introTimer = document.querySelector("[data-intro-timer]");
 const skipIntroButton = document.querySelector("[data-skip-intro]");
 const birthdayAudio = document.querySelector("#birthday-audio");
+const pageVideos = document.querySelectorAll("video");
 const smoothLinks = document.querySelectorAll('a[href^="#"]');
 
 if (introScreen) {
@@ -48,14 +49,64 @@ if (secretButton && secretMessage) {
 let introFinished = false;
 let introSecondsRemaining = 10;
 let introTimerId = null;
+let birthdayAudioStopTimerId = null;
 
 const stopBirthdayAudio = () => {
   if (!birthdayAudio) {
     return;
   }
 
+  if (birthdayAudioStopTimerId) {
+    window.clearTimeout(birthdayAudioStopTimerId);
+    birthdayAudioStopTimerId = null;
+  }
+
   birthdayAudio.pause();
   birthdayAudio.currentTime = 0;
+};
+
+const scheduleBirthdayAudioStop = () => {
+  if (!birthdayAudio) {
+    return;
+  }
+
+  if (birthdayAudioStopTimerId) {
+    window.clearTimeout(birthdayAudioStopTimerId);
+  }
+
+  birthdayAudioStopTimerId = window.setTimeout(() => {
+    stopBirthdayAudio();
+  }, 30000);
+};
+
+const tryPlayBirthdayAudio = () => {
+  if (!birthdayAudio) {
+    return Promise.resolve();
+  }
+
+  birthdayAudio.muted = false;
+  birthdayAudio.volume = 1;
+  return birthdayAudio.play();
+};
+
+const setupVideoAudio = () => {
+  if (!pageVideos.length) {
+    return;
+  }
+
+  pageVideos.forEach((video) => {
+    video.defaultMuted = false;
+    video.muted = false;
+
+    video.addEventListener("play", () => {
+      video.muted = false;
+      video.volume = 1;
+
+      if (birthdayAudio && !birthdayAudio.paused) {
+        birthdayAudio.pause();
+      }
+    });
+  });
 };
 
 const startBirthdayAudio = () => {
@@ -63,20 +114,40 @@ const startBirthdayAudio = () => {
     return;
   }
 
-  const playPromise = birthdayAudio.play();
+  const playPromise = tryPlayBirthdayAudio();
 
-  if (playPromise && typeof playPromise.catch === "function") {
-    playPromise.catch(() => {
-      const unlockAudio = () => {
-        birthdayAudio.play().catch(() => {});
-        window.removeEventListener("pointerdown", unlockAudio);
-        window.removeEventListener("keydown", unlockAudio);
-      };
-
-      window.addEventListener("pointerdown", unlockAudio, { once: true });
-      window.addEventListener("keydown", unlockAudio, { once: true });
-    });
+  if (!playPromise || typeof playPromise.then !== "function") {
+    scheduleBirthdayAudioStop();
+    return;
   }
+
+  playPromise
+    .then(() => {
+      scheduleBirthdayAudioStop();
+    })
+    .catch(() => {
+      // autoplay blocked by browser, fallback handled on first interaction
+    });
+};
+
+const unlockBirthdayAudioOnFirstInteraction = () => {
+  const unlockAudio = () => {
+    const playPromise = tryPlayBirthdayAudio();
+
+    if (!playPromise || typeof playPromise.then !== "function") {
+      scheduleBirthdayAudioStop();
+      return;
+    }
+
+    playPromise
+      .then(() => {
+        scheduleBirthdayAudioStop();
+      })
+      .catch(() => {});
+  };
+
+  window.addEventListener("pointerdown", unlockAudio, { once: true });
+  window.addEventListener("keydown", unlockAudio, { once: true });
 };
 
 const updateIntroTimer = () => {
@@ -93,7 +164,6 @@ const finishIntro = () => {
   introFinished = true;
   introScreen.classList.add("is-hidden");
   document.body.classList.remove("intro-active");
-  stopBirthdayAudio();
 
   if (introTimerId) {
     window.clearInterval(introTimerId);
@@ -107,6 +177,7 @@ const finishIntro = () => {
 
 if (introScreen && introTitles.length) {
   startBirthdayAudio();
+  unlockBirthdayAudioOnFirstInteraction();
   updateIntroTimer();
 
   introTimerId = window.setInterval(() => {
@@ -135,6 +206,8 @@ if (introScreen && introTitles.length) {
 if (skipIntroButton) {
   skipIntroButton.addEventListener("click", finishIntro);
 }
+
+setupVideoAudio();
 
 smoothLinks.forEach((link) => {
   link.addEventListener("click", (event) => {
