@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday sir</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="intro" id="intro-screen" aria-live="polite">
+    <div class="intro__sky">
+      <span class="rocket rocket--one"></span>
+      <span class="rocket rocket--two"></span>
+      <span class="rocket rocket--three"></span>
+      <span class="rocket rocket--four"></span>
+      <span class="smoke smoke--one"></span>
+      <span class="smoke smoke--two"></span>
+      <span class="smoke smoke--three"></span>
+      <span class="smoke smoke--four"></span>
+      <span class="burst burst--one"></span>
+      <span class="burst burst--two"></span>
+      <span class="burst burst--three"></span>
+      <span class="burst burst--four"></span>
+      <span class="burst burst--five"></span>
+      <span class="burst burst--six"></span>
+    </div>
+    <div class="intro__content">
+      <p class="intro__label">Celebration Mode</p>
+      <div class="intro__titles">
+        <h1 class="intro__title is-active" data-intro-step="0">Happy Birthday Sir</h1>
+        <h1 class="intro__title" data-intro-step="1">Let's Start Your Day</h1>
+      </div>
+      <button class="intro__skip" type="button" data-skip-intro>Skip </button>
+    </div>
+  </div>
+
+  <div class="noise"></div>
+
+  <header class="hero page-shell">
+    <div class="hero__spotlight reveal">
+      <div class="hero__spotlight-copy">
+        <p class="hero__overlay-tag">Happy Birthday</p>
+        <h2>HAPPY BIRTHDAY </h2>
+        <p class="hero__copy">
+          
+        </p>
+      </div>
+      <div class="hero__spotlight-photo">
+        <img src="assets/media/main-photo.jpeg" alt="Main birthday photo">
+      </div>
+    </div>
+
+    <div class="hero__feature reveal">
+      <div class="hero__warning">
+        <span class="hero__alert">Breaking News</span>
+        <p class="hero__eyebrow">ok </p>
+        <h1>sir ko shubham galti se bola liya</h1>
+        <p class="hero__copy">
+          brown Sexy boy
+        </p>
+        <a class="hero__cta" href="#main-video">Play The Moment</a>
+      </div>
+
+      <div class="hero__video" id="main-video">
+        <video controls playsinline preload="metadata" poster="assets/media/main-photo.jpeg">
+          <source src="assets/media/main-video.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        <div class="hero__overlay">
+          <p class="hero__overlay-tag">The Moment</p>
+          <h2>moj marte raho </h2>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <section class="story reveal">
+      <div class="section-heading">
+        <span>Scene 02</span>
+        <h2> Thoda Dil Se</h2>
+      </div>
+      <div class="story__grid">
+        <article class="story__card">
+          <p class="story__tag">Oops</p>
+          <h3>sir moj marte rahao </h3>
+          <p> moj maltab samje ge na sir 😁</p>
+        </article>
+        <article class="story__card">
+          <p class="story__tag">Truth</p>
+          <h3>voh 2 ki ma ki aakha sir</h3>
+          <p>better luck next time sir</p>
+        </article>
+        <article class="story__card story__card--accent">
+          <p class="story__tag">Birthday Note</p>
+          <h3>happy birthday sir all time my wish of you 
+            jada english nhi aate 😁 isliye itna he.</h3>
+          <p>Tu dost kam, sir zyada ho sir.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="extra-video reveal">
+      <div class="section-heading">
+        <span>Scene 03</span>
+        <h2>Second Video Moment</h2>
+      </div>
+      <div class="extra-video__layout">
+        <div class="hero__video">
+          <video controls playsinline preload="metadata">
+            <source src="assets/media/second-video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <div class="hero__overlay">
+            <p class="hero__overlay-tag">Second Video</p>
+            <h2>Ye raha tumhara doosra video.</h2>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="memories reveal">
+      <div class="section-heading">
+        <span>Scene 04</span>
+        <h2>Memory Frames</h2>
+      </div>
+      <div class="memories__grid">
+        <figure class="memory-card memory-card--large">
+          <img src="assets/media/photo-1.jpeg" alt="Memory photo 1">
+          <figcaption>Yaha se sab start hua.</figcaption>
+        </figure>
+        <figure class="memory-card">
+          <img src="assets/media/photo-2.jpeg" alt="Memory photo 2">
+          <figcaption>Yaha hum full legend mode me the.</figcaption>
+        </figure>
+        <div class="memory-quote">
+          <p>"Galtiyan side me, yaari center me."</p>
+          <span>Keep your best lines, inside this card later.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="secret reveal">
+      <div class="section-heading">
+        <span>Scene 05</span>
+        <h2>Open Secret</h2>
+      </div>
+      <button class="secret__button" type="button" data-secret-button>
+        Open Secret
+      </button>
+      <div class="secret__message" data-secret-message hidden>
+        <p class="secret__label">Hidden Message</p>
+        <h3>Tu dost nahi... sir ho.</h3>
+        <p>Happy Birthday. Bakchodi chalegi, loyalty kabhi kam nahi hogi.</p>
+      </div>
+    </section>
+
+    <section class="ending reveal">
+      <p class="ending__eyebrow">Final Scene</p>
+      <h2>Happy Birthday Sir</h2>
+      <p>
+        sex karte rahne sir but dog ke sath nhi .
+      </p>
+    </section>
+  </main>
+
+  <script src="assets/js/script.js"></script>
+</body>
+</html>
