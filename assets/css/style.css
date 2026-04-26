@@ -141,6 +141,21 @@ video {
   margin-top: 1rem;
 }
 
+.intro__timer {
+  width: 5rem;
+  height: 5rem;
+  margin: 0.75rem auto 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.12), rgba(255, 107, 74, 0.18));
+  box-shadow: 0 0 34px rgba(255, 179, 71, 0.2);
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 2.7rem;
+  letter-spacing: 0.06em;
+}
+
 .intro__title {
   position: absolute;
   inset: 0;

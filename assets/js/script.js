@@ -3,7 +3,9 @@ const secretButton = document.querySelector("[data-secret-button]");
 const secretMessage = document.querySelector("[data-secret-message]");
 const introScreen = document.querySelector("#intro-screen");
 const introTitles = document.querySelectorAll("[data-intro-step]");
+const introTimer = document.querySelector("[data-intro-timer]");
 const skipIntroButton = document.querySelector("[data-skip-intro]");
+const birthdayAudio = document.querySelector("#birthday-audio");
 const smoothLinks = document.querySelectorAll('a[href^="#"]');
 
 if (introScreen) {
@@ -44,6 +46,44 @@ if (secretButton && secretMessage) {
 }
 
 let introFinished = false;
+let introSecondsRemaining = 10;
+let introTimerId = null;
+
+const stopBirthdayAudio = () => {
+  if (!birthdayAudio) {
+    return;
+  }
+
+  birthdayAudio.pause();
+  birthdayAudio.currentTime = 0;
+};
+
+const startBirthdayAudio = () => {
+  if (!birthdayAudio) {
+    return;
+  }
+
+  const playPromise = birthdayAudio.play();
+
+  if (playPromise && typeof playPromise.catch === "function") {
+    playPromise.catch(() => {
+      const unlockAudio = () => {
+        birthdayAudio.play().catch(() => {});
+        window.removeEventListener("pointerdown", unlockAudio);
+        window.removeEventListener("keydown", unlockAudio);
+      };
+
+      window.addEventListener("pointerdown", unlockAudio, { once: true });
+      window.addEventListener("keydown", unlockAudio, { once: true });
+    });
+  }
+};
+
+const updateIntroTimer = () => {
+  if (introTimer) {
+    introTimer.textContent = String(introSecondsRemaining);
+  }
+};
 
 const finishIntro = () => {
   if (!introScreen || introFinished) {
@@ -53,6 +93,12 @@ const finishIntro = () => {
   introFinished = true;
   introScreen.classList.add("is-hidden");
   document.body.classList.remove("intro-active");
+  stopBirthdayAudio();
+
+  if (introTimerId) {
+    window.clearInterval(introTimerId);
+    introTimerId = null;
+  }
 
   window.setTimeout(() => {
     introScreen.setAttribute("hidden", "");
@@ -60,6 +106,18 @@ const finishIntro = () => {
 };
 
 if (introScreen && introTitles.length) {
+  startBirthdayAudio();
+  updateIntroTimer();
+
+  introTimerId = window.setInterval(() => {
+    introSecondsRemaining -= 1;
+    updateIntroTimer();
+
+    if (introSecondsRemaining <= 0) {
+      finishIntro();
+    }
+  }, 1000);
+
   window.setTimeout(() => {
     introTitles[0].classList.remove("is-active");
     if (introTitles[1]) {
@@ -68,8 +126,10 @@ if (introScreen && introTitles.length) {
   }, 1800);
 
   window.setTimeout(() => {
-    finishIntro();
-  }, 3900);
+    if (!introFinished) {
+      finishIntro();
+    }
+  }, 10000);
 }
 
 if (skipIntroButton) {
